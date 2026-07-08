@@ -1,14 +1,23 @@
-# 🏛️ Kebele Management System API
+# 🏛️ Digital Government Service Management API
 
 ## 📘 Project Overview
 
-The **Kebele Management System** is a web-based application designed to streamline interactions between residents and kebele administrations in Ethiopia.  
-Kebeles are the smallest administrative units responsible for local services such as issuing **national IDs**, **birth certificates**, and other essential documents.
+The **Digital Citizen Service Management API** is a backend system designed to streamline citizen service requests and administrative document workflows through a secure RESTful API.
 
-This system provides residents with convenient access to services like applying for or renewing IDs and obtaining birth certificates.  
+The platform enables users to submit applications for essential services such as issuing **national IDs**, **birth certificates**, and upload required supporting documents, track application status, and receive notifications when requests are processed.
+  
 For administrators, it offers tools for managing applications, tracking service workflows, and sending notifications when documents are ready.  
 Overall, it reduces in-person visits, enhances operational efficiency, and improves transparency in local government services.
 
+---
+## Engineering Highlights
+
+- Designed RESTful APIs using Django REST Framework
+- Implemented JWT authentication and role-based permissions
+- Built document submission workflows with status tracking
+- Implemented automated email notifications using Django email services
+- Created production-ready API structure with versioned endpoints
+- Deployed backend using Render
 ---
 
 ## 🌐 Features
@@ -49,7 +58,7 @@ Overall, it reduces in-person visits, enhances operational efficiency, and impro
 
 ---
 
-### 🧑‍💼 Admin-Facing Features (Kebele Dashboard)
+### 🧑‍💼 Admin-Facing Features (Dashboard)
 
 #### 📊 Dashboard Overview
 
@@ -63,7 +72,7 @@ Overall, it reduces in-person visits, enhances operational efficiency, and impro
 
 #### 📧 User Notification System
 
-- Admins can send notifications via email (e.g., _“Your ID is ready – please visit the kebele office.”_).
+- Admins can send notifications via email (e.g., _“Your ID is ready – please visit nearby local office.”_).
 
 #### 📈 Reporting Tools
 
@@ -75,7 +84,7 @@ Overall, it reduces in-person visits, enhances operational efficiency, and impro
 #### 🧑‍🔧 Admin Authentication
 
 - Role-based access control:
-  - **Super Admin** (for kebele heads)
+  - **Super Admin** (for office heads/ managers)
   - **Staff** (for processing tasks)
 
 ---
@@ -184,9 +193,12 @@ Represents service requests such as **New ID**, **ID Renewal**, or **Birth Certi
 
 ## 🚀 Summary
 
-The **Kebele Management System** combines usability, efficiency, and transparency,  
-providing a modern digital solution to improve service delivery at the kebele level.  
-Residents stay informed through **real-time notifications**, while administrators benefit from **streamlined workflows** and **data-driven insights**.
+
+The **Digital Citizen Service Management API** demonstrates the development of a secure and scalable backend system for managing citizen service workflows.
+
+The project focuses on backend engineering practices including API design, authentication, authorization, database modeling, file handling, workflow management, and automated notifications.
+
+The architecture can be extended to support additional digital services and administrative workflows.
 
 ---
 
@@ -207,7 +219,7 @@ A Postman collection has been created to facilitate testing of the API endpoints
 - The collection is exported as a JSON file and is located in the postman/ folder:
 
 ```bash
-postman/kebele-management-system.postman_collection.json
+postman/management-system.postman_collection.json
 ```
 
 - To use it:
@@ -236,7 +248,7 @@ python manage.py collectstatic --noinput
 
 1. Import the Postman collection:
 ```bash
-postman/kebele-management-system.postman_collection.json
+postman/management-system.postman_collection.json
 ```
 
 2. Update the base URL to:
