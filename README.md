@@ -276,7 +276,7 @@ curl https://kebele-management-api.onrender.com/
 ```bash
 
 git clone <repo-url>
-cd kebele-management-system
+cd government-service-management-api
 
 ```
 
