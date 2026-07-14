@@ -15,10 +15,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
 from django.urls import path, include
 from django.http import JsonResponse
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 def home(request):
     return JsonResponse({"message": "Kebele Management API is live!"})
@@ -29,3 +29,6 @@ urlpatterns = [
     path('api/v1/auth/', include('users.urls')),
     path('api/v1/', include('applications.urls')),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
