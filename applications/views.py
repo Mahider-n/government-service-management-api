@@ -9,7 +9,7 @@ from rest_framework.exceptions import PermissionDenied
 
 class IsOwnerOrAdmin(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        if request.user.is_staff:  # admin
+        if getattr(request.user, 'is_staff', False) or getattr(request.user, 'is_superuser', False) or getattr(request.user, 'is_admin', False):
             return True
         return obj.user == request.user  # resident
 
@@ -20,7 +20,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_staff:
+        if getattr(user, 'is_staff', False) or getattr(user, 'is_superuser', False) or getattr(user, 'is_admin', False):
             return Application.objects.all()
         return Application.objects.filter(user=user)
 
@@ -35,7 +35,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
         old_status = instance.status  
 
     # Residents: can only update if status is Pending
-        if not user.is_staff and instance.status != "PENDING":
+        if not (getattr(user, 'is_staff', False) or getattr(user, 'is_superuser', False) or getattr(user, 'is_admin', False)) and instance.status != "PENDING":
             raise PermissionDenied("You can only update while application is pending.")
 
     # Save the updated data
