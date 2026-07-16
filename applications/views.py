@@ -2,14 +2,16 @@ from django.shortcuts import render
 
 # Create your views here.
 from rest_framework import viewsets, permissions
+from rest_framework.exceptions import PermissionDenied, NotFound
+from rest_framework.response import Response
+
 from .models import Application
 from .serializers import ApplicationSerializer
 from .utils import send_status_update_email
-from rest_framework.exceptions import PermissionDenied
 
 class IsOwnerOrAdmin(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        if request.user.is_staff:  # admin
+        if getattr(request.user, 'is_staff', False) or getattr(request.user, 'is_superuser', False) or getattr(request.user, 'is_admin', False):
             return True
         return obj.user == request.user  # resident
 
@@ -20,7 +22,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_staff:
+        if getattr(user, 'is_staff', False) or getattr(user, 'is_superuser', False) or getattr(user, 'is_admin', False):
             return Application.objects.all()
         return Application.objects.filter(user=user)
 
@@ -28,19 +30,27 @@ class ApplicationViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
     
     def perform_update(self, serializer):
-        instance = self.get_object()
         user = self.request.user
+        instance = self.get_object()
 
-    # Store the old status before update
-        old_status = instance.status  
+        old_status = instance.status
 
-    # Residents: can only update if status is Pending
-        if not user.is_staff and instance.status != "PENDING":
+        if not (getattr(user, 'is_staff', False) or getattr(user, 'is_superuser', False) or getattr(user, 'is_admin', False)) and instance.status != "PENDING":
             raise PermissionDenied("You can only update while application is pending.")
 
-    # Save the updated data
         updated_instance = serializer.save()
 
-    # Send email if admin changed the status
-        if user.is_staff and old_status != updated_instance.status:
+        if (getattr(user, 'is_staff', False) or getattr(user, 'is_superuser', False) or getattr(user, 'is_admin', False)) and old_status != updated_instance.status:
             send_status_update_email(updated_instance)
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+        except NotFound:
+            raise NotFound("Application not found.")
+
+        if not (getattr(request.user, 'is_staff', False) or getattr(request.user, 'is_superuser', False) or getattr(request.user, 'is_admin', False)) and instance.user != request.user:
+            raise PermissionDenied("You can only delete your own application.")
+
+        self.perform_destroy(instance)
+        return Response(status=204)

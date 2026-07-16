@@ -1,222 +1,88 @@
-# 🏛️ Digital Government Service Management API
+# Digital Government Service Management 
 
-## 📘 Project Overview
+## Project Overview
 
-The **Digital Citizen Service Management API** is a backend system designed to streamline citizen service requests and administrative document workflows through a secure RESTful API.
+The Digital Government Service Management system is a modern digital platform that streamlines the delivery of government services by providing citizens and administrators with an efficient, secure, and user-friendly experience.
 
-The platform enables users to submit applications for essential services such as issuing **national IDs**, **birth certificates**, and upload required supporting documents, track application status, and receive notifications when requests are processed.
-  
-For administrators, it offers tools for managing applications, tracking service workflows, and sending notifications when documents are ready.  
-Overall, it reduces in-person visits, enhances operational efficiency, and improves transparency in local government services.
+Residents can apply for essential government services such as new National ID registration, National ID renewal, and birth certificate requests, upload the required supporting documents, and track the status of their applications in real time. Administrators can securely review applications, verify submitted documents, manage application status updates, and oversee registered users through a professional administrative dashboard.
 
----
-## Engineering Highlights
-
-- Designed RESTful APIs using Django REST Framework
-- Implemented JWT authentication and role-based permissions
-- Built document submission workflows with status tracking
-- Implemented automated email notifications using Django email services
-- Created production-ready API structure with versioned endpoints
-- Deployed backend using Render
----
-
-## 🌐 Features
-
-### 👥 User-Facing Features (Resident Portal)
-
-#### 🧭 Service Information Hub
-
-- Detailed guides on available services, including:
-  - Application procedures for a **new ID**.
-  - Renewal process for **existing IDs**.
-  - Steps to obtain **birth certificates**.
-- Information on **requirements** and **processing timelines** for each service.
-
-#### 📝 Online Registration
-
-- Users can submit applications by providing personal details (name, address, contact info).
-- Upload required documents such as photos and proofs.
-
-#### ⏳ Status Tracking
-
-- Real-time updates on application status (e.g., `Pending Review`, `Rejected`, `Ready for Pickup`).
-
-#### 🔔 Notifications
-
-- Automated email notifications when:
-  - Documents are ready for pickup.
-  - Additional information is required.
-
-#### 🔐 User Authentication
-
-- Secure **login/signup** using email or phone number.
-- Includes **password reset** functionality.
-
-#### 🔍 Search and FAQ
-
-- Searchable knowledge base for quick answers to common questions.
+The platform significantly reduces the need for in-person visits to government offices, minimizing long queues, unnecessary travel, paperwork, and administrative delays. By digitizing the entire application and review process, it improves service accessibility, increases transparency through real-time status tracking, accelerates processing times, and enhances communication between citizens and government agencies. This results in a more efficient, reliable, and citizen-centered public service experience.
 
 ---
 
-### 🧑‍💼 Admin-Facing Features (Dashboard)
+##  What’s Included
 
-#### 📊 Dashboard Overview
+- Secure JWT-based authentication and role-based access
+- Application submission for new ID requests, renewals, and birth certificates
+- Status tracking for applications
+- Admin review flow for application status changes
+- User profile update page
+- Responsive, professional React UI integrated with the Django backend
 
-- Displays metrics such as:
-  - Number of applications per service.
-  - Names of all applicants and their corresponding information/files.
+ 
+---
 
-#### 🗃️ Application Management
+## Backend API
 
-- View, review, approve, or reject applications.
+The backend is built with Django and Django REST Framework and is exposed under the versioned API namespace:
 
-#### 📧 User Notification System
+- Authentication endpoints under /api/v1/auth/
+- Application endpoints under /api/v1/applications/
 
-- Admins can send notifications via email (e.g., _“Your ID is ready – please visit nearby local office.”_).
+### Authentication Endpoints
 
-#### 📈 Reporting Tools
+| Method | Endpoint | Description |
+| ------ | -------- | ----------- |
+| POST | /api/v1/auth/register/ | Register a new user |
+| POST | /api/v1/auth/login/ | Obtain JWT tokens |
+| POST | /api/v1/auth/token/refresh/ | Refresh access tokens |
+| GET | /api/v1/auth/users/ | List users (admin only) |
+| GET/PATCH | /api/v1/auth/users/<id>/ | View or update a user profile |
 
-- Generate reports on service usage:
-  - Daily/weekly registrations.
-  - Completion rates.
-  - User demographics.
+### Application Endpoints
 
-#### 🧑‍🔧 Admin Authentication
-
-- Role-based access control:
-  - **Super Admin** (for office heads/ managers)
-  - **Staff** (for processing tasks)
+| Method | Endpoint | Description |
+| ------ | -------- | ----------- |
+| GET | /api/v1/applications/ | List applications for the current user or all users for admins |
+| POST | /api/v1/applications/ | Submit a new application |
+| PATCH | /api/v1/applications/<id>/ | Update an application status |
+| DELETE | /api/v1/applications/<id>/ | Delete an application |
 
 ---
 
-### ⚙️ General Features
+## Tech Stack
 
-- **📱 Responsive Design**: Mobile-friendly for users with limited desktop access.
-- **🛡️ Security Measures**: Data encryption and audit logging for key actions.
-
----
-
-## 🧩 APIs and Technologies
-
-### 🖥️ Backend API
-
-The backend is implemented as a **RESTful API** using:
-
-- **Python (Django + Django REST Framework)**
-- Versioned endpoints under `/api/v1/`
-
-Two main modules:
-
-- **Authentication (users)**
-- **Applications (services)**
+- Backend: Django, Django REST Framework
+- Frontend: React + Vite
+- Authentication: JWT
+- Database: SQLite for development
+- Email notifications: Django email backend
 
 ---
 
-### 🔑 Authentication Endpoints (`/api/v1/auth/`)
+## Run the Project
 
-| Method | Endpoint          | Description                            |
-| ------ | ----------------- | -------------------------------------- |
-| `POST` | `/register/`      | Register a new user                    |
-| `POST` | `/login/`         | Obtain JWT access and refresh tokens   |
-| `POST` | `/token/refresh/` | Refresh an expired access token        |
-| `GET`  | `/users/`         | List all registered users (admin only) |
-| `GET`  | `/users/<id>/`    | Retrieve details of a specific user    |
+### Backend
 
----
+```bash
+python manage.py runserver
+```
 
-### 🧾 Application Endpoints (`/api/v1/applications/`)
+### Frontend
 
-| Method  | Endpoint | Description                                                                 |
-| ------- | -------- | --------------------------------------------------------------------------- |
-| `GET`   | `/`      | Retrieve a list of the current user’s applications (or all if admin)        |
-| `POST`  | `/`      | Submit a new application (ID request, renewal, birth certificate)           |
-| `PATCH` | `/<id>/` | Update an existing application (admins can change status and trigger email) |
-| `GET`   | `/<id>/` | Retrieve detailed information for a specific application                    |
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 ---
 
-## 💾 Database Models
+## Project Structure
 
-The system uses **SQLite** as the primary database during development  
-(with the option to migrate to **PostgreSQL** or **MySQL** for production).
-
-Django ORM ensures consistency, validation, and relational integrity.
-
----
-
-### 🧍‍♂️ 1. User Model (`users.models.User`)
-
-Extends Django’s `AbstractUser`, supporting **role-based access**.
-
-**Fields:**
-
-- `id`: Primary key (auto-generated)
-- `username`: Unique identifier for login
-- `email`: User’s email address
-- `phone_number`: Contact phone number
-- `role`: Defines user permissions (`resident`, `admin`)
-- `date_joined`: Timestamp of registration
-
----
-
-### 📄 2. Application Model (`applications.models.Application`)
-
-Represents service requests such as **New ID**, **ID Renewal**, or **Birth Certificate**.
-
-**Fields:**
-
-- `user`: Foreign key (One-to-One) linked to the User model
-- `application_type`: (`NEW_ID`, `ID_RENEWAL`, `BIRTH_CERTIFICATE`)
-- `status`: (`PENDING`, `READY`, `REJECTED`)
-- `full_name`, `dob`, `gender`, `resident_address`, `phone_number`
-- **Attachments:**
-  - `photo`
-  - `residence_proof`
-  - `old_id_card`
-  - `hospital_proof`
-  - `parent_id`
-- `created_at`: Automatically set submission timestamp
-
----
-
-### 📬 3. Notification System
-
-- Notifications are handled dynamically using Django’s **email system** (`send_mail()`).
-- Example:
-  > “Your ID is ready for pickup.”
-- Testing:
-  - Emails were tested using Mailtrap to ensure the notification system works without sending emails to real users.
-  - All status updates (e.g., Pending Review, Rejected, Ready for Pickup) correctly trigger email notifications captured in Mailtrap.
-  - For production, the system can be configured to use real SMTP servers (e.g., Gmail, SendGrid, Mailgun) for actual delivery to users.
-
----
-
-## 🚀 Summary
-
-
-The **Digital Citizen Service Management API** demonstrates the development of a secure and scalable backend system for managing citizen service workflows.
-
-The project focuses on backend engineering practices including API design, authentication, authorization, database modeling, file handling, workflow management, and automated notifications.
-
-The architecture can be extended to support additional digital services and administrative workflows.
-
----
-
-### 🛠️ Tech Stack Summary
-
-- **Backend:** Django, Django REST Framework
-- **Database:** SQLite (development), PostgreSQL/MySQL (production)
-- **Authentication:** JWT
-- **Email Notifications:** Django `send_mail()`
-- **Deployment Options:** Render 
-
----
-
-### 📂 Postman Collection
-
-A Postman collection has been created to facilitate testing of the API endpoints for User CRUD and Application CRUD.
-
-- The collection is exported as a JSON file and is located in the postman/ folder:
+- backend logic and API routes live in the Django app folders
+- the integrated web UI lives in the frontend/ directory
+- API documentation and sample requests are available in the postman/ folder
 
 ```bash
 postman/management-system.postman_collection.json
@@ -230,9 +96,9 @@ postman/management-system.postman_collection.json
 
 ---
 
-## 🚀 Deployment (Render)
+## Deployment (Render)
 
-The app is deployed on Render and is available at:
+The backend is deployed on Render and is available at:
 
 **Live URL:** [https://kebele-management-api.onrender.com](https://kebele-management-api.onrender.com)
 
@@ -242,7 +108,7 @@ The app is deployed on Render and is available at:
 ```bash
 python manage.py collectstatic --noinput
 ```
-## 🔧 Testing Endpoints on Render
+## Testing Endpoints on Render
 
 - Use Postman to test all endpoints:
 

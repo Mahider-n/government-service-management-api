@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-as+b%_ml5or(#399yx1aa_ou03^=okyyy*+%y10e(s5b%14k%f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['kebele-management-api.onrender.com']
+ALLOWED_HOSTS = ['kebele-management-api.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -66,6 +66,8 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
     *[
         origin.strip().rstrip('/')
         for origin in os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')

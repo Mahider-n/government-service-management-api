@@ -67,22 +67,22 @@ class ApplicationSerializer(serializers.ModelSerializer):
 
         if app_type == "NEW_ID":
             allowed = [
-                "application_type", "full_name", "dob", "gender",
+                "id", "application_type", "full_name", "dob", "gender",
                 "blood_group", "resident_address", "phone_number",
                 "emergency_contact_name", "emergency_contact_phone",
-                "photo", "residence_proof", "status"
+                "photo", "residence_proof", "status", "created_at"
             ]
         elif app_type == "ID_RENEWAL":
             allowed = [
-                "application_type", "existing_id_number", "full_name",
+                "id", "application_type", "existing_id_number", "full_name",
                 "dob", "resident_address", "phone_number", "reason_for_renewal",
-                "old_id_card", "photo", "status"
+                "old_id_card", "photo", "status", "created_at"
             ]
         elif app_type == "BIRTH_CERTIFICATE":
             allowed = [
-                "application_type", "child_full_name", "dob", "place_of_birth",
+                "id", "application_type", "child_full_name", "dob", "place_of_birth",
                 "gender", "father_full_name", "mother_full_name",
-                "resident_address", "phone_number", "hospital_proof","birth_certificate_photo", "parent_id", "status"
+                "resident_address", "phone_number", "hospital_proof", "birth_certificate_photo", "parent_id", "status", "created_at"
             ]
         else:
             allowed = ret.keys()  # fallback

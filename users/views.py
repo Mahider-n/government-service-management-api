@@ -27,6 +27,6 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     # Ensure normal users can only access their own profile
     def get_queryset(self):
         user = self.request.user
-        if user.is_admin:  # Admins can see all users
+        if getattr(user, 'is_admin', False) or getattr(user, 'is_staff', False) or getattr(user, 'is_superuser', False):
             return User.objects.all()
         return User.objects.filter(id=user.id)
